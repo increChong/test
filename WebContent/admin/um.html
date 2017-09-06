@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" type="text/css"
+	href="/webproject/admin/easyui/themes/default/easyui.css">
+<link rel="stylesheet" type="text/css"
+	href="/webproject/admin/easyui/themes/icon.css">
+<script type="text/javascript"
+	src="/webproject/admin/easyui/jquery.min.js" charset="UTF-8"></script>
+<script type="text/javascript"
+	src="/webproject/admin/easyui/jquery.easyui.min.js" charset="UTF-8"></script>
+
+<script type="text/javascript"
+	src="/webproject/admin/easyui/locale/easyui-lang-zh_CN.js"
+	charset="UTF-8"></script>
+<script type="text/javascript" src="/webproject/admin/js/um.js"></script>
+<style type="text/css">
+#tb {
+	width: 300px;
+	margin: 20px auto
+}
+
+#tb td {
+	padding: 10px
+}
+</style>
+<title></title>
+</head>
+<body>
+	用户列表
+	<hr>
+	<table id="tab">
+
+	</table>
+	<!-- dialog -->
+	<div id="dialog" class="easyui-dialog"
+		data-options="iconCls:'icon-add',resizable:true,modal:true,collapsible:true,buttons:'#footer',closed:true"
+		title="添加用户" style="width: 400px; height: 400px;">
+		<form action="" method="post" id="f1">
+			<table id="tb">
+				<tr>
+					<td>邮箱：</td>
+					<td><input type="text" id="uemail" name="uemail"
+						class="easyui-textbox easyui-validatebox"
+						data-options="required:true"></td>
+				</tr>
+				<tr>
+					<td>账号：</td>
+					<td><input type="text" id="uloginid" name="uloginid"
+						class="easyui-textbox easyui-validatebox"
+						data-options="required:true"></td>
+				</tr>
+				<tr>
+					<td>密码：</td>
+					<td><input type="text" id="upassword" name="upassword"
+						class="easyui-textbox easyui-validatebox"
+						data-options="required:true"></td>
+				</tr>
+				<tr>
+					<td>电话：</td>
+					<td><input type="text" id="utel" name="utel"
+						class="easyui-textbox easyui-validatebox"
+						data-options="required:true"></td>
+				</tr>
+				<tr>
+					<td>地址：</td>
+					<td><input type="text" id="uaddress" name="uaddress"
+						class="easyui-textbox easyui-validatebox"
+						data-options="required:true"></td>
+				</tr>
+				<tr>
+					<td>性别：</td>
+					<td><select id="usex" class="easyui-combobox" name="usex"
+						style="width: 50px">
+							<option value="男">男</option>
+							<option value="女">女</option>
+					</select></td>
+				</tr>
+			</table>
+		</form>
+	</div>
+	<div id="footer">
+		<a id="btnsave" href="#" class="easyui-linkbutton"
+			data-options="iconCls:'icon-save'">保存</a> <a id="btncancel" href="#"
+			class="easyui-linkbutton" data-options="iconCls:'icon-cancel'">取消</a>
+	</div>
+
+
+</body>
+</html>

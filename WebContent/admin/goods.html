@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>商品管理</title>
+<link rel="stylesheet" type="text/css"
+	href="/webproject/admin/easyui/themes/default/easyui.css">
+<link rel="stylesheet" type="text/css"
+	href="/webproject/admin/easyui/themes/icon.css">
+<script type="text/javascript"
+	src="/webproject/admin/easyui/jquery.min.js" charset="UTF-8"></script>
+<script type="text/javascript" src="/webproject/admin/js/jquery-form.js"
+	charset="UTF-8"></script>
+<script type="text/javascript"
+	src="/webproject/admin/easyui/jquery.easyui.min.js" charset="UTF-8"></script>
+<script type="text/javascript"
+	src="/webproject/admin/easyui/locale/easyui-lang-zh_CN.js"
+	charset="UTF-8"></script>
+<script type="text/javascript" src="/webproject/admin/js/goods.js"></script>
+<script type="text/javascript">
+
+    //下面用于多图片上传预览功能
+
+    function setImagePreviews(avalue) {
+
+        var docObj = document.getElementById("file");
+
+        var dd = document.getElementById("dd");
+
+        dd.innerHTML = "";
+
+        var fileList = docObj.files;
+
+        for (var i = 0; i < fileList.length; i++) {            
+
+
+
+            dd.innerHTML += "<div style='float:left' > <img id='img" + i + "'  /> </div>";
+
+            var imgObjPreview = document.getElementById("img"+i); 
+
+            if (docObj.files && docObj.files[i]) {
+
+                //火狐下，直接设img属性
+
+                imgObjPreview.style.display = 'block';
+
+                imgObjPreview.style.width = '200px';
+
+                imgObjPreview.style.height = '240px';
+
+                //imgObjPreview.src = docObj.files[0].getAsDataURL();
+
+                //火狐7以上版本不能用上面的getAsDataURL()方式获取，需要一下方式
+
+                imgObjPreview.src = window.URL.createObjectURL(docObj.files[i]);
+
+            }
+
+            else {
+
+                //IE下，使用滤镜
+
+                docObj.select();
+
+                var imgSrc = document.selection.createRange().text;
+
+                alert(imgSrc)
+
+                var localImagId = document.getElementById("img" + i);
+
+                //必须设置初始大小
+
+                localImagId.style.width = "200px";
+
+                localImagId.style.height = "240px";
+
+                //图片异常的捕捉，防止用户修改后缀来伪造图片
+
+                try {
+
+                    localImagId.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale)";
+
+                    localImagId.filters.item("DXImageTransform.Microsoft.AlphaImageLoader").src = imgSrc;
+                }
+                catch (e) {
+                    alert("您上传的图片格式不正确，请重新选择!");
+                    return false;
+                }
+                imgObjPreview.style.display = 'none';
+
+                document.selection.empty();
+            }
+
+        }  
+        return true;
+    }
+
+
+
+</script>
+
+<style type="text/css">
+#tb {
+	width: 500px;
+	margin: 20px auto
+}
+
+#tb td {
+	padding-left: 20px;
+	padding-top: 10px
+}
+
+#tb tr {
+	padding: 10px
+}
+
+#tb2 {
+	width: 500px;
+	margin: 20px auto
+}
+
+#tb2 td {
+	padding-left: 30px;
+	padding-top: 10px
+}
+
+#tb2 tr {
+	padding: 10px
+}
+
+input {
+	width: 200px
+}
+</style>
+
+</head>
+<body>
+	商品管理
+	<hr>
+	<input id="cate" name="cate" />
+	<table id="tb">
+	</table>
+	<!-- dialog -->
+	<div id="dialog" class="easyui-dialog"
+		data-options="iconCls:'icon-add',resizable:true,modal:true,collapsible:true,buttons:'#footer',closed:true"
+		title="添加商品" style="width: 400px; height: 600px;">
+		<form action="/webproject//goodscontroller.do?type=add" method="post"
+			id="f1" enctype="multipart/form-data">
+			<table id="tb">
+				<tr>
+					<td>编号：</td>
+					<td><input type="text" id="gid" name="gid"
+						class="easyui-textbox easyui-validatebox"
+						data-options="required:true"></td>
+				</tr>
+				<tr>
+					<td>书名：</td>
+					<td><input type="text" id="gtitle" name="gtitle"
+						class="easyui-textbox easyui-validatebox"
+						data-options="required:true"></td>
+				</tr>
+				<tr>
+					<td>作者：</td>
+					<td><input type="text" id="gauthor" name="gauthor"
+						class="easyui-textbox easyui-validatebox"
+						data-options="required:true"></td>
+				</tr>
+				<tr>
+					<td>售价：</td>
+					<td><input type="text" id="gsaleprice" name="gsaleprice"
+						class="easyui-textbox easyui-validatebox"
+						data-options="required:true"></td>
+				</tr>
+				<tr>
+					<td>原价：</td>
+					<td><input type="text" id="ginprice" name="ginprice"
+						class="easyui-textbox easyui-validatebox"
+						data-options="required:true"></td>
+				</tr>
+				<tr>
+					<td>图片：</td>
+					<td><div>
+							<input type="file" name="file" id="file" multiple="multiple"
+								style="width: 200px;" onchange="javascript:setImagePreviews();"
+								accept="image/*" />
+						</div>
+						<div id="dd" style="width: 200px;"></div></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td><input type="text" id="gimg" name="gimg"
+						class="easyui-textbox easyui-validatebox"
+						data-options="required:true" prompt="图片名称"></td>
+				</tr>
+				<tr>
+					<td>简介：</td>
+					<td><textarea id="gdesc" name="gdesc"
+							style="height: 200px; width: 200px"
+							class="easyui-textbox easyui-validatebox"></textarea></td>
+				</tr>
+				<tr>
+					<td>类别：</td>
+					<td><input id="cate1" name="cate1" /></td>
+				</tr>
+				<tr>
+					<td>出版社：</td>
+					<td><select id="pid" class="easyui-combobox" name="pid"
+						style="width: 200px">
+							<option value="1">清华出版社</option>
+							<option value="2">北大出版社</option>
+							<option value="3">人大出版社</option>
+							<option value="4">北航出版社</option>
+					</select></td>
+				</tr>
+				<tr>
+					<td>点击量：</td>
+					<td><input type="text" id="gclicks" name="gclicks"
+						class="easyui-textbox easyui-validatebox"
+						data-options="required:true"></td>
+				</tr>
+			</table>
+			<input type="text" id="gimg" name="gimg" style="display: none">
+		</form>
+
+
+	</div>
+	<div id="footer">
+		<a id="btnsave" href="#" class="easyui-linkbutton"
+			data-options="iconCls:'icon-save'">保存</a> <a id="btncancel" href="#"
+			class="easyui-linkbutton" data-options="iconCls:'icon-cancel'">取消</a>
+	</div>
+
+</body>
+</html>
